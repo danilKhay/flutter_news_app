@@ -9,12 +9,20 @@ abstract class SearchEvent extends Equatable {
 
 class Searching extends SearchEvent {
   final String searchQuery;
-  final int page;
 
-  Searching(this.searchQuery, this.page);
+  Searching(this.searchQuery);
 
   @override
-  List<Object> get props => [searchQuery, page];
+  List<Object> get props => [searchQuery];
+}
+
+class FirstSearching extends SearchEvent {
+  final String searchQuery;
+
+  FirstSearching(this.searchQuery);
+
+  @override
+  List<Object> get props => [searchQuery];
 }
 
 class LocalSearching extends SearchEvent {
@@ -24,4 +32,8 @@ class LocalSearching extends SearchEvent {
 
   @override
   List<Object> get props => [searchQuery];
+}
+
+class SearchClean extends SearchEvent {
+
 }

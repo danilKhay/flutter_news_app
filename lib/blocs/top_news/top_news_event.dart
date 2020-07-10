@@ -1,14 +1,17 @@
-import 'package:equatable/equatable.dart';
-
-abstract class TopNewsEvent extends Equatable {
+abstract class TopNewsEvent {
   const TopNewsEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class TopNewsFetched extends TopNewsEvent {
 
   @override
   String toString() => "TopShortNewsFetched";
+}
+
+class TopNewsCheckInDb extends TopNewsEvent {
+  @override
+  String toString() => "TopNewsCheckInDb";
+}
+
+class TopNewsUpdate extends TopNewsEvent {
 }

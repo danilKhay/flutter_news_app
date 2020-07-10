@@ -18,7 +18,7 @@ class _NewsApiClient implements NewsApiClient {
 
   @override
   fetchNews(
-      {apiKey = "9f59bb670abb412aa415169c133b8146",
+      {apiKey,
       country = "us",
       pageSize = "10"}) async {
     const _extra = <String, dynamic>{};
@@ -44,7 +44,7 @@ class _NewsApiClient implements NewsApiClient {
 
   @override
   fetchTopNews(
-      {apiKey = "9f59bb670abb412aa415169c133b8146",
+      {apiKey,
       country = "us",
       pageSize = "1"}) async {
     const _extra = <String, dynamic>{};
@@ -70,9 +70,9 @@ class _NewsApiClient implements NewsApiClient {
 
   @override
   searchNews(
-      {apiKey = "9f59bb670abb412aa415169c133b8146",
+      {apiKey,
       query,
-      pageSize = "20",
+      pageSize,
       page = "1"}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
@@ -98,7 +98,7 @@ class _NewsApiClient implements NewsApiClient {
 
   @override
   fetchNewsInfo(
-      {apiKey = "9f59bb670abb412aa415169c133b8146",
+      {apiKey,
       query,
       pageSize = "1"}) async {
     const _extra = <String, dynamic>{};

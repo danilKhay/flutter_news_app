@@ -11,7 +11,7 @@ class NewsListRepository {
   NewsListRepository({@required this.apiClient}) : assert(apiClient != null);
 
   Future<List<NewsViewModel>> fetchData() async {
-    final data = await apiClient.fetchNews();
+    final data = await apiClient.fetchNews(apiKey: NewsApiClient.apiKey);
     if (data.status != "ok") throw "Status is ${data.status}";
     final newsList = data.list;
     final List<NewsViewModel> result = [];

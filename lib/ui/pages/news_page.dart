@@ -66,6 +66,10 @@ class NewsPage extends StatelessWidget {
       bool timeAgoEnable) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.chevron_left),
+          onPressed: () => Navigator.pop(context, data.isSavedToBookmark),
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.share),
@@ -77,8 +81,7 @@ class NewsPage extends StatelessWidget {
               if (isSaved) {
                 var result = await showRemoveDialog(context);
                 if (result == true) {
-                  newsToBookmarksBloc
-                      .add(RemovingFromBookmarks(data.title));
+                  newsToBookmarksBloc.add(RemovingFromBookmarks(data.title));
                   return true;
                 } else {
                   return false;
@@ -187,4 +190,3 @@ class NewsPage extends StatelessWidget {
         chooserTitle: null);
   }
 }
-

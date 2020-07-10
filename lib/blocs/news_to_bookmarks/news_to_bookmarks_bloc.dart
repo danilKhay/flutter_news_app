@@ -8,10 +8,7 @@ class NewsToBookmarksBloc
   final NewsToBookmarksRepository _newsToBookmarksRepository;
 
   NewsToBookmarksBloc(this._newsToBookmarksRepository)
-      : assert(_newsToBookmarksRepository != null);
-
-  @override
-  NewsToBookmarksState get initialState => Initial();
+      : assert(_newsToBookmarksRepository != null), super(Initial());
 
   @override
   Stream<NewsToBookmarksState> mapEventToState(NewsToBookmarksEvent event) async*{

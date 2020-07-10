@@ -1,15 +1,20 @@
-import 'package:equatable/equatable.dart';
-import 'package:newsapp/repositories/models/news.dart';
-
-abstract class NewsListEvent extends Equatable {
+abstract class NewsListEvent {
   const NewsListEvent();
-
-  @override
-  List<Object> get props => [];
 }
 
 class FirstLoading extends NewsListEvent {
 
   @override
   String toString() => "FirstLoading";
+}
+
+class NewsListUpdate extends NewsListEvent {
+
+  @override
+  String toString() => "NewsListUpdate";
+}
+
+class NewsListCheckInDb extends NewsListEvent {
+  @override
+  String toString() => "NewsListCheckInDb";
 }

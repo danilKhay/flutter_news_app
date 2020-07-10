@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:koin/koin.dart';
 import 'package:newsapp/blocs/bookmarks/bookmarks_bloc.dart';
 import 'package:newsapp/blocs/bookmarks/bookmarks_event.dart';
 import 'package:newsapp/blocs/bookmarks/bookmarks_state.dart';
@@ -20,7 +21,7 @@ import 'package:newsapp/ui/widgets/rounded_image.dart';
 import 'package:newsapp/utils.dart';
 import 'news_page.dart';
 
-class BookmarksPage extends StatelessWidget {
+class BookmarksPage extends StatelessWidget with KoinComponentMixin {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<NewsToBookmarksBloc>(context);
@@ -70,26 +71,13 @@ class BookmarksPage extends StatelessWidget {
       itemCount: data.length,
       itemBuilder: (context, index) {
         return InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MultiBlocProvider(
-                  providers: [
-                    BlocProvider(
-                      create: (context) => SnackBarBloc(),
-                    ),
-                    BlocProvider(
-                      create: (context) => NewsToBookmarksBloc(NewsToBookmarksRepository()),
-                    ),
-                    BlocProvider(
-                        create: (context) => NewsInfoBloc(null)
-                          ..add(FetchNewsInfoFromLocal(data[index], timeAgoEnable: false))),
-                  ],
-                  child: NewsPage(),
-                ),
-              ),
-            );
+          onTap: () async {
+            var item = data[index];
+            var isSaved = item.isSavedToBookmark;
+            var result = await _navigate(context, item);
+            if (result != isSaved) {
+              BlocProvider.of<BookmarksBloc>(context).add(FetchBookmarks());
+            }
           },
           child: BookmarkItem(
             data: data[index],
@@ -99,6 +87,29 @@ class BookmarksPage extends StatelessWidget {
       },
     );
   }
+
+  Future<bool> _navigate(BuildContext context, NewsViewModel data) async {
+    return await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => SnackBarBloc(),
+            ),
+            BlocProvider(
+              create: (context) => NewsToBookmarksBloc(get<NewsToBookmarksRepository>()),
+            ),
+            BlocProvider(
+                create: (context) => NewsInfoBloc(null)
+                  ..add(FetchNewsInfoFromLocal(data, timeAgoEnable: false))),
+          ],
+          child: NewsPage(),
+        ),
+      ),
+    );
+  }
+
 }
 
 class BookmarkItem extends StatelessWidget {

@@ -9,10 +9,7 @@ import 'news_list_state.dart';
 class NewsListBloc extends Bloc<NewsListEvent, NewsListState> {
   final NewsListRepository newsListRepository;
 
-  NewsListBloc({this.newsListRepository}) : assert(newsListRepository != null);
-
-  @override
-  NewsListState get initialState => Loading();
+  NewsListBloc({this.newsListRepository}) : assert(newsListRepository != null), super(Loading());
 
   @override
   Stream<NewsListState> mapEventToState(NewsListEvent event) async* {
@@ -33,6 +30,23 @@ class NewsListBloc extends Bloc<NewsListEvent, NewsListState> {
           }
         } else {
           yield Failed(e.toString());
+        }
+      }
+    }
+    if (event is NewsListUpdate) {
+      if (state is Loaded) {
+        var data = (state as Loaded).data;
+        yield Loaded(data);
+      }
+    }
+    if (event is NewsListCheckInDb) {
+      if (state is Loaded) {
+        var data = (state as Loaded).data;
+        var firstItem = data[0];
+        var result = await this.newsListRepository.isSaved(firstItem.title);
+        if (result != firstItem.isSavedToBookmark) {
+          firstItem.isSavedToBookmark = result;
+          yield Loaded(data);
         }
       }
     }

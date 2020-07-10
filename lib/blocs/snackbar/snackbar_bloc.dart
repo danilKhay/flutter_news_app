@@ -3,9 +3,7 @@ import 'package:newsapp/blocs/snackbar/snackbar_event.dart';
 import 'package:newsapp/blocs/snackbar/snackbar_state.dart';
 
 class SnackBarBloc extends Bloc<SnackBarEvent, SnackBarState> {
-
-  @override
-  SnackBarState get initialState => InitialSnackBar();
+  SnackBarBloc() : super(InitialSnackBar());
 
   @override
   Stream<SnackBarState> mapEventToState(SnackBarEvent event) async*{

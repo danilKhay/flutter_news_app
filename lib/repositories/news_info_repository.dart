@@ -8,7 +8,8 @@ class NewsInfoRepository {
   NewsInfoRepository(this.apiClient);
 
   Future<NewsViewModel> fetchData(String title) async {
-    final data = await apiClient.fetchNewsInfo(query: "\"$title\"");
+    final data = await apiClient.fetchNewsInfo(
+        apiKey: NewsApiClient.apiKey, query: "\"$title\"");
     if (data.status != "ok") throw "Status is ${data.status}";
     if (data.list.length != 1)
       throw "Response error: List size is ${data.list.length}";

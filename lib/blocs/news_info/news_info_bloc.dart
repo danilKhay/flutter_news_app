@@ -7,10 +7,7 @@ import 'package:newsapp/repositories/news_info_repository.dart';
 class NewsInfoBloc extends Bloc<NewsInfoEvent, NewsInfoState> {
   final NewsInfoRepository newsInfoRepository;
 
-  NewsInfoBloc(this.newsInfoRepository);
-
-  @override
-  NewsInfoState get initialState => NewsInfoLoading();
+  NewsInfoBloc(this.newsInfoRepository) : super(NewsInfoLoading());
 
   @override
   Stream<NewsInfoState> mapEventToState(NewsInfoEvent event) async* {

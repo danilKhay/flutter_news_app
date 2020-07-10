@@ -10,7 +10,7 @@ class TopNewsRepository {
   TopNewsRepository({@required this.apiClient}) : assert(apiClient != null);
 
   Future<NewsViewModel> getTopNews() async {
-    final data = await apiClient.fetchTopNews();
+    final data = await apiClient.fetchTopNews(apiKey: NewsApiClient.apiKey);
     if (data.status != "ok") throw "Status is ${data.status}";
     if (data.list.length != 1) throw "Response error: List size is ${data.list.length}";
     bool saved = await isSaved(data.list[0].title);

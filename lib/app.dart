@@ -6,9 +6,6 @@ import 'package:newsapp/ui/app_screen.dart';
 import 'blocs/bottom_navigation/bottom_navigation_bloc.dart';
 
 class App extends StatelessWidget {
-  final NewsApiClient apiClient;
-
-  App(this.apiClient);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +37,7 @@ class App extends StatelessWidget {
             create: (BuildContext context) => BottomNavigationBloc(),
           ),
         ],
-        child: AppScreen(apiClient),
+        child: AppScreen(),
       ),
     );
   }

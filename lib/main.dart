@@ -1,14 +1,24 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:koin/koin.dart';
 import 'package:newsapp/app.dart';
-import 'package:dio/dio.dart';
-import 'package:newsapp/repositories/api/news_api.dart';
 
 import 'blocs/bloc.dart';
+import 'di/modules.dart';
 
 void main() {
-  BlocSupervisor.delegate = SimpleBlocDelegate();
-  final dio = Dio();
-  runApp(App(NewsApiClient(dio)));
+  Bloc.observer = SimpleBlocDelegate();
+  startKoin((app) {
+    app.printLogger(level: Level.debug);
+    app.modules([
+      newsListRepositoryModule,
+      topNewsRepositoryModule,
+      searchRepositoryModule,
+      newsInfoRepositoryModule,
+      newsToBookmarksRepositoryModule,
+      bookmarksPageRepositoryModule
+    ]);
+  });
+  runApp(App());
 }
 

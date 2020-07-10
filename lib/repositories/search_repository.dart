@@ -6,13 +6,17 @@ import 'models/news.dart';
 
 class SearchRepository {
   final NewsApiClient apiClient;
+  final int pageSizeInt = int.parse(NewsApiClient.pageSizeForSearchList);
 
   SearchRepository(this.apiClient);
 
   Future<List<ShortNews>> searchNews(String query, int page) async {
     if (apiClient == null) throw "ApiClient is null";
-    final data =
-        await apiClient.searchNews(query: query, page: page.toString());
+    final data = await apiClient.searchNews(
+        apiKey: NewsApiClient.apiKey,
+        query: query,
+        page: page.toString(),
+        pageSize: NewsApiClient.pageSizeForSearchList);
     if (data.status != "ok") throw "Status is ${data.status}";
     return data.data;
   }

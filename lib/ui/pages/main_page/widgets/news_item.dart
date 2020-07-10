@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newsapp/repositories/models/news_viewmodel.dart';
 import 'package:newsapp/ui/widgets/rounded_image.dart';
 
-import 'info_line_widget.dart';
+import '../../../widgets/info_line_widget.dart';
 
 class NewsItem extends StatelessWidget {
   final NewsViewModel item;
@@ -12,7 +12,6 @@ class NewsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
     return Container(
       margin: EdgeInsets.only(right: 8, left: 16, top: 15),
       child: Column(
@@ -25,17 +24,23 @@ class NewsItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: width * 0.7,
-                child: Text(
-                  item.title,
-                  maxLines: 4,
-                  overflow: TextOverflow.ellipsis,
+              Expanded(
+                flex: 3,
+                child: Container(
+                  margin: EdgeInsets.only(right: 16),
+                  child: Text(
+                    item.title,
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
-              RoundedImage(
-                margin: EdgeInsets.only(right: 8),
-                imageUrl: item.imageUrl,
+              Expanded(
+                flex: 1,
+                child: RoundedImage(
+                  margin: EdgeInsets.only(right: 8),
+                  imageUrl: item.imageUrl,
+                ),
               ),
             ],
           ),

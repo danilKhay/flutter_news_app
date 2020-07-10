@@ -16,4 +16,3 @@ class TabUpdated extends BottomNavigationEvent {
   @override
   String toString() => "TabUpdated { tab: $tab }";
 }
-

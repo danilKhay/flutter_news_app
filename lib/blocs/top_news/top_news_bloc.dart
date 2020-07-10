@@ -8,19 +8,18 @@ import 'package:newsapp/repositories/top_news_repository.dart';
 class TopNewsBloc extends Bloc<TopNewsEvent, TopNewsState> {
   final TopNewsRepository topNewsRepository;
 
-  TopNewsBloc({@required this.topNewsRepository}) : assert(topNewsRepository != null);
+  TopNewsBloc({@required this.topNewsRepository})
+      : assert(topNewsRepository != null),
+        super(TopNewsLoading());
 
   @override
-  TopNewsState get initialState => TopNewsLoading();
-
-  @override
-  Stream<TopNewsState> mapEventToState(TopNewsEvent event) async*{
+  Stream<TopNewsState> mapEventToState(TopNewsEvent event) async* {
     if (event is TopNewsFetched) {
       try {
         yield TopNewsLoading();
         final data = await this.topNewsRepository.getTopNews();
         yield TopNewsLoaded(data);
-      } catch(e) {
+      } catch (e) {
         var connectivityResult = await (Connectivity().checkConnectivity());
         if (connectivityResult == ConnectivityResult.none) {
           try {
@@ -32,6 +31,22 @@ class TopNewsBloc extends Bloc<TopNewsEvent, TopNewsState> {
         } else {
           yield TopNewsFailure(e.toString());
         }
+      }
+    }
+    if (event is TopNewsCheckInDb) {
+      if (state is TopNewsLoaded) {
+        final data = (state as TopNewsLoaded).data;
+        final isSaved = await this.topNewsRepository.isSaved(data.title);
+        if (data.isSavedToBookmark != isSaved) {
+          data.isSavedToBookmark = isSaved;
+          yield TopNewsLoaded(data);
+        }
+      }
+    }
+    if (event is TopNewsUpdate) {
+      if (state is TopNewsLoaded) {
+        final data = (state as TopNewsLoaded).data;
+        yield TopNewsLoaded(data);
       }
     }
   }

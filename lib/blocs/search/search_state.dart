@@ -13,11 +13,23 @@ class SearchLoading extends SearchState {
 
 class SearchLoaded extends SearchState {
   final List<ShortNews> data;
+  final bool hasReachedMax;
+  final String searchQuery;
+  final int page;
 
-  SearchLoaded(this.data);
+  SearchLoaded({this.data, this.hasReachedMax, this.searchQuery, this.page});
+
+  SearchLoaded copyWith({List<ShortNews> data, bool hasReachedMax, String searchQuery, int page}) {
+    return SearchLoaded(
+      data: data ?? this.data,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+      searchQuery: searchQuery ?? this.searchQuery,
+      page: page ?? this.page,
+    );
+  }
 
   @override
-  List<Object> get props => [data];
+  List<Object> get props => [data, hasReachedMax];
 }
 
 class SearchFailed extends SearchState {

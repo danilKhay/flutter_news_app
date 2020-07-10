@@ -6,10 +6,7 @@ import 'package:newsapp/repositories/bookmarks_page_repository.dart';
 class BookmarksBloc extends Bloc<BookmarksEvent, BookmarksState> {
   final BookmarksPageRepository bookmarksPageRepository;
 
-  BookmarksBloc(this.bookmarksPageRepository);
-
-  @override
-  BookmarksState get initialState => Loading();
+  BookmarksBloc(this.bookmarksPageRepository) : super(Loading());
 
   @override
   Stream<BookmarksState> mapEventToState(BookmarksEvent event) async*{

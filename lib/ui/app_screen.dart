@@ -11,7 +11,6 @@ import 'package:newsapp/blocs/snackbar/snackbar_bloc.dart';
 import 'package:newsapp/blocs/snackbar/snackbar_state.dart';
 import 'package:newsapp/blocs/top_news/top_news_bloc.dart';
 import 'package:newsapp/blocs/top_news/top_news_event.dart';
-import 'package:newsapp/repositories/api/news_api.dart';
 import 'package:newsapp/repositories/news_to_bookmarks_repository.dart';
 import 'package:newsapp/repositories/bookmarks_page_repository.dart';
 import 'package:newsapp/repositories/models/bottom_tab.dart';
@@ -19,16 +18,14 @@ import 'package:newsapp/repositories/news_list_repository.dart';
 import 'package:newsapp/repositories/search_repository.dart';
 import 'package:newsapp/repositories/top_news_repository.dart';
 import 'package:newsapp/ui/pages/bookmarks_page.dart';
-import 'file:///C:/Users/Zver/AndroidStudioProjects/news_app/lib/ui/pages/main_page/main_page.dart';
+import 'package:newsapp/ui/pages/main_page/main_page.dart';
 import 'package:newsapp/ui/pages/search_page.dart';
 import 'package:newsapp/ui/pages/settings_page.dart';
 import 'package:newsapp/ui/widgets/tab_selector.dart';
 import 'package:newsapp/utils.dart';
+import 'package:koin/koin.dart';
 
-class AppScreen extends StatelessWidget {
-  final NewsApiClient apiClient;
-
-  AppScreen(this.apiClient);
+class AppScreen extends StatelessWidget with KoinComponentMixin{
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +61,11 @@ class AppScreen extends StatelessWidget {
       return MultiBlocProvider(
         providers: [
           BlocProvider(
-              create: (context) => BookmarksBloc(BookmarksPageRepository())
+              create: (context) => BookmarksBloc(get<BookmarksPageRepository>())
                 ..add(FetchBookmarks())),
           BlocProvider(
             create: (context) =>
-                NewsToBookmarksBloc(NewsToBookmarksRepository()),
+                NewsToBookmarksBloc(get<NewsToBookmarksRepository>()),
           ),
         ],
         child: BookmarksPage(),
@@ -79,16 +76,16 @@ class AppScreen extends StatelessWidget {
     }
     return MultiBlocProvider(providers: [
       BlocProvider(
-        create: (context) => NewsToBookmarksBloc(NewsToBookmarksRepository()),
+        create: (context) => NewsToBookmarksBloc(get<NewsToBookmarksRepository>()),
       ),
       BlocProvider(
         create: (context) => TopNewsBloc(
-            topNewsRepository: TopNewsRepository(apiClient: apiClient))
+            topNewsRepository: get<TopNewsRepository>())
           ..add(TopNewsFetched()),
       ),
       BlocProvider(
         create: (context) => NewsListBloc(
-            newsListRepository: NewsListRepository(apiClient: apiClient))
+            newsListRepository: get<NewsListRepository>())
           ..add(FirstLoading()),
       ),
     ], child: MainPage());
@@ -109,10 +106,9 @@ class AppScreen extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => BlocProvider(
                     create: (context) => SearchBloc(
-                      searchRepository: SearchRepository(null),
+                      searchRepository: get<SearchRepository>(),
                     ),
                     child: SearchPage(
-                      apiClient: apiClient,
                       isLocal: true,
                     ),
                   ),
@@ -141,9 +137,9 @@ class AppScreen extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => BlocProvider(
                   create: (context) => SearchBloc(
-                    searchRepository: SearchRepository(apiClient),
+                    searchRepository: get<SearchRepository>(),
                   ),
-                  child: SearchPage(apiClient: apiClient),
+                  child: SearchPage(),
                 ),
               ),
             );
