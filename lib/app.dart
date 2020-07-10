@@ -11,23 +11,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        primaryColor: Colors.white,
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-            backgroundColor: Colors.white,
-            selectedItemColor: Colors.indigoAccent,
-            unselectedItemColor: Colors.grey),
-        appBarTheme: AppBarTheme(
-          elevation: 0.0,
-          actionsIconTheme: IconThemeData(color: Colors.black),
-          iconTheme: IconThemeData(color: Colors.black),
-          textTheme: TextTheme(
-            headline6: TextStyle(
-                color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
-          ),
-        ),
-      ),
+      theme: _themeData(),
       home: MultiBlocProvider(
         providers: [
           BlocProvider<SnackBarBloc>(
@@ -38,6 +22,26 @@ class App extends StatelessWidget {
           ),
         ],
         child: AppScreen(),
+      ),
+    );
+  }
+
+  ThemeData _themeData() {
+    return ThemeData(
+      scaffoldBackgroundColor: Colors.white,
+      primaryColor: Colors.white,
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.indigoAccent,
+          unselectedItemColor: Colors.grey),
+      appBarTheme: AppBarTheme(
+        elevation: 0.0,
+        actionsIconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.black),
+        textTheme: TextTheme(
+          headline6: TextStyle(
+              color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
+        ),
       ),
     );
   }
